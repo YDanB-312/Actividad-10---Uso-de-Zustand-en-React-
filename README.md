@@ -5,14 +5,10 @@ Guía: _Carrito de compras con React y Zustand_ — Instructor Juan Pablo Chamiz
 
 Tienda en React con un carrito de compras cuyo estado se comparte entre
 componentes usando **Zustand**, sin pasar props ni usar Providers. Incluye los
-pasos 1 a 10 de la guía y los cuatro retos de extensión.
+cuatro retos de extensión de la actividad y las respuestas a las preguntas de
+reflexión inicial.
 
 ![Tienda funcionando con productos en el carrito](docs/captura-tienda.png)
-
-## Resultado de aprendizaje
-
-Implementar un estado global en una aplicación React con la librería Zustand,
-separando datos, lógica y vista.
 
 ## Requisitos
 
@@ -41,11 +37,7 @@ Otros comandos:
 ```bash
 npm run build     # Compila la versión de producción
 npm run lint      # Revisa el estilo del código
-npm run captura   # Comprueba el checklist y regenera docs/captura-tienda.png
 ```
-
-> `npm run captura` solo es una ayuda de evidencia: necesita `npm run dev`
-> corriendo y usa Puppeteer con el Edge/Chrome del sistema.
 
 ## Estructura del proyecto
 
@@ -98,23 +90,10 @@ store, por eso el `Encabezado` se actualiza aunque no reciba props.
    o tarda más de 8 segundos, se muestra un mensaje de error con botón
    **Reintentar**.
 
-## Checklist de comprobación (paso 10)
-
-Verificado automáticamente con `npm run captura` (16/16 correctas):
-
-- [x] Al cargar la página, el carrito dice "Tu carrito está vacío" y la insignia muestra 0.
-- [x] Al agregar un producto, aparece en el carrito y la insignia sube a 1.
-- [x] Al agregar otra vez el mismo producto, no se duplica la fila: la cantidad pasa a 2.
-- [x] El total se recalcula con cada producto agregado.
-- [x] El botón Quitar elimina solo ese producto.
-- [x] El botón Vaciar carrito deja la insignia en 0 y muestra el mensaje de vacío.
-- [x] En una pantalla angosta, los dos paneles se ubican uno debajo del otro.
-- [x] Cada fila muestra su subtotal (reto 2).
-- [x] El botón `−` reduce la cantidad y elimina al llegar a 0 (reto 1).
-- [x] El carrito se conserva al recargar la página (reto 3).
-- [x] El catálogo se carga desde la API (reto 4).
-
 ## Preguntas de reflexión
+
+> Estas respuestas también se entregan en el documento Word
+> `Reflexion - Carrito React Zustand.docx`, con la portada institucional.
 
 **1. ¿Por qué `Encabezado` se actualiza cuando agregas un producto, si no recibe
 ninguna prop?**
@@ -174,7 +153,7 @@ solo agregan capacidades.
 
 - [x] Proyecto React + Vite con Zustand
 - [x] README con la captura de la tienda funcionando
-- [x] Respuestas a las preguntas de reflexión
+- [x] Respuestas a las preguntas de reflexión (README y documento Word)
 - [x] Los cuatro retos de extensión
 - [ ] Subir el proyecto a un repositorio de GitHub
 
