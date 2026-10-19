@@ -1,64 +1,64 @@
 /* ===== VARIABLES DE COLOR Y MEDIDAS ===== */
 :root {
-  --fondo: #f5f5f4;          /* Gris muy claro para el fondo de la pagina */
+  --fondo: #f5f5f4;          /* Gris muy claro para el fondo de la página */
   --tarjeta: #ffffff;        /* Blanco para los paneles */
   --texto: #1c1917;          /* Casi negro para el texto principal */
   --texto-suave: #78716c;    /* Gris para textos secundarios */
   --borde: #e7e5e4;          /* Gris claro para bordes y separadores */
   --acento: #0f766e;         /* Verde azulado como color principal */
-  --acento-hover: #115e59;   /* Tono mas oscuro al pasar el mouse */
+  --acento-hover: #115e59;   /* Tono más oscuro al pasar el mouse */
   --radio: 12px;             /* Redondeo de las esquinas */
 }
 
-/* ===== REINICIO BASICO ===== */
+/* ===== REINICIO BÁSICO ===== */
 * {
-  margin: 0;                 /* Quita margenes por defecto del navegador */
+  margin: 0;                 /* Quita márgenes por defecto del navegador */
   padding: 0;                /* Quita rellenos por defecto */
   box-sizing: border-box;    /* El ancho incluye padding y borde */
 }
 
-/* ===== CUERPO DE LA PAGINA ===== */
+/* ===== CUERPO DE LA PÁGINA ===== */
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; /* Fuente del sistema */
   background-color: var(--fondo);   /* Fondo gris claro */
   color: var(--texto);              /* Color de texto principal */
-  line-height: 1.5;                 /* Espaciado comodo entre lineas */
+  line-height: 1.5;                 /* Espaciado cómodo entre líneas */
 }
 
 /* ===== CONTENEDOR GENERAL ===== */
 .app {
-  max-width: 960px;          /* Ancho maximo para pantallas grandes */
+  max-width: 960px;          /* Ancho máximo para pantallas grandes */
   margin: 0 auto;            /* Centra el contenido horizontalmente */
   padding: 2rem 1rem;        /* Espacio alrededor del contenido */
 }
 
 /* ===== ENCABEZADO ===== */
 .encabezado {
-  display: flex;                     /* Pone titulo e insignia en una fila */
-  justify-content: space-between;    /* Titulo a la izquierda, insignia a la derecha */
+  display: flex;                     /* Pone título e insignia en una fila */
+  justify-content: space-between;    /* Título a la izquierda, insignia a la derecha */
   align-items: center;               /* Centra verticalmente */
   margin-bottom: 2rem;               /* Separa el encabezado del contenido */
 }
 
 .encabezado h1 {
-  font-size: 1.75rem;        /* Tamano del titulo */
+  font-size: 1.75rem;        /* Tamaño del título */
   font-weight: 600;          /* Grosor semi negrita */
-  letter-spacing: -0.02em;   /* Letras ligeramente mas juntas */
+  letter-spacing: -0.02em;   /* Letras ligeramente más juntas */
 }
 
 /* Insignia del contador del carrito */
 .insignia {
   background-color: var(--tarjeta);  /* Fondo blanco */
   border: 1px solid var(--borde);    /* Borde suave */
-  border-radius: 999px;              /* Forma de pilula */
+  border-radius: 999px;              /* Forma de píldora */
   padding: 0.4rem 1rem;              /* Espacio interno */
-  font-weight: 500;                  /* Texto un poco mas grueso */
+  font-weight: 500;                  /* Texto un poco más grueso */
 }
 
-/* ===== DISTRIBUCION EN COLUMNAS ===== */
+/* ===== DISTRIBUCIÓN EN COLUMNAS ===== */
 .contenido {
   display: grid;                                          /* Usamos CSS Grid */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 columnas o 1 en movil */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 columnas o 1 en móvil */
   gap: 1.5rem;                                            /* Espacio entre paneles */
   align-items: start;                                     /* Cada panel con su propia altura */
 }
@@ -72,23 +72,22 @@ body {
 }
 
 .panel h2 {
-  font-size: 1.1rem;         /* Titulo del panel discreto */
+  font-size: 1.1rem;         /* Título del panel discreto */
   font-weight: 600;          /* Semi negrita */
-  margin-bottom: 1rem;       /* Separacion con la lista */
+  margin-bottom: 1rem;       /* Separación con la lista */
 }
 
 /* ===== FILAS DE PRODUCTOS ===== */
 .fila {
-  display: flex;                     /* Texto y boton en una fila */
-  justify-content: space-between;    /* Texto a la izquierda, boton a la derecha */
+  display: flex;                     /* Texto y botón en una fila */
+  justify-content: space-between;    /* Texto a la izquierda, botón a la derecha */
   align-items: center;               /* Centra verticalmente */
-  gap: 1rem;                         /* Separacion entre contenido y acciones */
   padding: 0.75rem 0;                /* Espacio arriba y abajo */
-  border-bottom: 1px solid var(--borde); /* Linea separadora */
+  border-bottom: 1px solid var(--borde); /* Línea separadora */
 }
 
 .fila:last-of-type {
-  border-bottom: none;       /* La ultima fila no lleva linea */
+  border-bottom: none;       /* La última fila no lleva línea */
 }
 
 .fila-nombre {
@@ -96,14 +95,14 @@ body {
 }
 
 .fila-detalle {
-  font-size: 0.875rem;       /* Texto mas pequeno */
+  font-size: 0.875rem;       /* Texto más pequeño */
   color: var(--texto-suave); /* Color gris */
 }
 
 /* ===== BOTONES ===== */
 .btn {
-  font: inherit;             /* Usa la misma fuente de la pagina */
-  font-size: 0.875rem;       /* Tamano de texto del boton */
+  font: inherit;             /* Usa la misma fuente de la página */
+  font-size: 0.875rem;       /* Tamaño de texto del botón */
   font-weight: 500;          /* Texto semi grueso */
   padding: 0.5rem 1rem;      /* Espacio interno */
   border-radius: 8px;        /* Esquinas redondeadas */
@@ -111,7 +110,7 @@ body {
   transition: background-color 0.2s, border-color 0.2s; /* Cambio de color suave */
 }
 
-/* Boton principal: relleno con el color de acento */
+/* Botón principal: relleno con el color de acento */
 .btn-primario {
   background-color: var(--acento);   /* Fondo verde azulado */
   color: #ffffff;                    /* Texto blanco */
@@ -119,10 +118,10 @@ body {
 }
 
 .btn-primario:hover {
-  background-color: var(--acento-hover); /* Mas oscuro al pasar el mouse */
+  background-color: var(--acento-hover); /* Más oscuro al pasar el mouse */
 }
 
-/* Boton secundario: solo borde, fondo transparente */
+/* Botón secundario: solo borde, fondo transparente */
 .btn-secundario {
   background-color: transparent;     /* Sin relleno */
   color: var(--texto);               /* Texto oscuro */
@@ -130,85 +129,28 @@ body {
 }
 
 .btn-secundario:hover {
-  border-color: var(--texto-suave);  /* Borde mas visible al pasar el mouse */
+  border-color: var(--texto-suave);  /* Borde más visible al pasar el mouse */
 }
 
-/* Boton que ocupa todo el ancho del panel */
+/* Botón que ocupa todo el ancho del panel */
 .btn-bloque {
   width: 100%;               /* Ancho completo */
-  margin-top: 1rem;          /* Separacion con el total */
+  margin-top: 1rem;          /* Separación con el total */
 }
 
 /* ===== TOTAL DEL CARRITO ===== */
 .total {
   display: flex;                     /* Etiqueta y valor en una fila */
   justify-content: space-between;    /* Extremos opuestos */
-  margin-top: 1rem;                  /* Separacion con la lista */
+  margin-top: 1rem;                  /* Separación con la lista */
   padding-top: 1rem;                 /* Espacio interno superior */
-  border-top: 2px solid var(--texto); /* Linea fuerte que marca el total */
-  font-size: 1.1rem;                 /* Texto un poco mas grande */
+  border-top: 2px solid var(--texto); /* Línea fuerte que marca el total */
+  font-size: 1.1rem;                 /* Texto un poco más grande */
 }
 
-/* ===== MENSAJE DE CARRITO VACIO ===== */
+/* ===== MENSAJE DE CARRITO VACÍO ===== */
 .vacio {
   color: var(--texto-suave); /* Texto gris */
   text-align: center;        /* Centrado */
   padding: 2rem 0;           /* Espacio arriba y abajo */
-}
-
-/* ===== ESTILOS AGREGADOS PARA LOS RETOS DE EXTENSION ===== */
-
-/* Aviso con el origen del catalogo (API o respaldo local) */
-.nota {
-  font-size: 0.75rem;        /* Texto pequeno */
-  color: var(--texto-suave); /* Gris */
-  margin-bottom: 0.5rem;     /* Separacion con la lista */
-}
-
-/* Contenedor con la imagen y los datos del producto */
-.fila-info {
-  display: flex;             /* Imagen y texto en una fila */
-  align-items: center;       /* Centra verticalmente */
-  gap: 0.75rem;              /* Separacion entre imagen y texto */
-  min-width: 0;              /* Permite que el texto se recorte si es largo */
-}
-
-/* Miniatura del producto que viene de la API */
-.fila-imagen {
-  width: 40px;               /* Ancho fijo */
-  height: 40px;              /* Alto fijo */
-  object-fit: contain;       /* La imagen no se deforma */
-  background-color: var(--tarjeta);
-  border: 1px solid var(--borde);
-  border-radius: 8px;
-  padding: 2px;
-}
-
-/* Subtotal por producto (reto 2) */
-.fila-subtotal {
-  font-size: 0.875rem;       /* Texto pequeno */
-  font-weight: 500;          /* Resaltado */
-}
-
-/* Botones de cantidad (reto 1): + y − */
-.fila-acciones {
-  display: flex;             /* Botones en una fila */
-  align-items: center;       /* Centra verticalmente */
-  gap: 0.5rem;               /* Separacion entre botones */
-}
-
-.btn-cantidad {
-  width: 2rem;               /* Boton cuadrado */
-  height: 2rem;              /* Boton cuadrado */
-  padding: 0;                /* Sin relleno extra */
-  display: inline-flex;      /* Centra el signo */
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  color: var(--texto);
-  border: 1px solid var(--borde);
-}
-
-.btn-cantidad:hover {
-  border-color: var(--texto-suave);
 }

@@ -3,12 +3,12 @@ import { useCarritoStore } from '../store/useCarritoStore'
 
 // Definimos el componente Encabezado
 function Encabezado() {
-  // Leemos solo items del store usando un selector (state => state.items).
-  // El componente se vuelve a dibujar solo cuando items cambia.
+  // Leemos solo items del store usando un selector (state => state.items)
+  // El componente se vuelve a dibujar solo cuando items cambia
   const items = useCarritoStore((state) => state.items)
 
-  // Sumamos las cantidades de todos los items para obtener el total de
-  // unidades. reduce recorre el arreglo acumulando un valor que empieza en 0.
+  // Sumamos las cantidades de todos los items para obtener el total de unidades
+  // reduce recorre el arreglo acumulando un valor que empieza en 0
   const totalUnidades = items.reduce((suma, item) => suma + item.cantidad, 0)
 
   // Devolvemos el JSX del encabezado
@@ -16,8 +16,8 @@ function Encabezado() {
     <header className="encabezado">
       {/* Nombre de la tienda */}
       <h1>Mi Tienda</h1>
-      {/* Insignia con el numero de unidades en el carrito */}
-      <span className="insignia">{totalUnidades} en el carrito</span>
+      {/* Insignia con el número de unidades en el carrito */}
+      <span className="insignia">{totalUnidades}</span>
     </header>
   )
 }
