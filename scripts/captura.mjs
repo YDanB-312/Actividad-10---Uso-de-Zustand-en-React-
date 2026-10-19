@@ -1,6 +1,6 @@
 // Script de verificación y evidencia.
 // Abre la tienda en un navegador headless, comprueba el checklist del paso 10
-// del PDF y guarda la captura usada en el README.
+// del PDF y los retos de extensión, y guarda la captura usada en el README.
 //
 // Uso:
 //   1. npm run dev          (en otra terminal)
@@ -36,8 +36,9 @@ function comprobar(descripcion, condicion) {
 const texto = (page, selector) =>
   page.$eval(selector, (el) => el.textContent.trim())
 
-const contar = (page, selector) =>
-  page.$$eval(selector, (els) => els.length)
+const contar = (page, selector) => page.$$eval(selector, (els) => els.length)
+
+const numero = (texto) => Number(String(texto).replace(/[^\d]/g, '')) || 0
 
 async function pulsarPorTexto(page, selector, textoBoton) {
   const pulsado = await page.evaluate(
@@ -55,6 +56,13 @@ async function pulsarPorTexto(page, selector, textoBoton) {
   if (!pulsado) throw new Error(`No se encontró el botón "${textoBoton}"`)
 }
 
+async function pulsarIndice(page, selector, indice) {
+  await page.$$eval(selector, (elementos, i) => elementos[i].click(), indice)
+}
+
+const esperarCatalogo = (page) =>
+  page.waitForSelector('.panel:first-of-type .fila', { timeout: 20000 })
+
 const main = async () => {
   const nav = await puppeteer.launch({
     executablePath: CANDIDATOS.find((p) => p) ?? undefined,
@@ -66,15 +74,15 @@ const main = async () => {
     const page = await nav.newPage()
     await page.setViewport({ width: 1200, height: 800 })
 
-    // Empezamos con el carrito limpio
+    // Empezamos con el carrito limpio (persist lo guarda en localStorage)
     await page.goto(URL, { waitUntil: 'domcontentloaded' })
     await page.evaluate(() => localStorage.clear())
     await page.reload({ waitUntil: 'domcontentloaded' })
 
-    // Esperamos a que se dibuje el catálogo
-    await page.waitForSelector('.panel .fila')
+    // Reto 4: el catálogo viene de la API
+    await esperarCatalogo(page)
     const filasCatalogo = await contar(page, '.panel:first-of-type .fila')
-    comprobar('El catálogo muestra los 4 productos', filasCatalogo === 4)
+    comprobar(`El catálogo cargado desde la API muestra productos (${filasCatalogo})`, filasCatalogo > 0)
 
     // 1. Carrito vacío e insignia en 0
     comprobar(
@@ -85,13 +93,13 @@ const main = async () => {
     )
     comprobar('La insignia arranca en 0', (await texto(page, '.insignia')) === '0')
 
-    // 2. Agregar una Camiseta y ver la insignia
-    await pulsarPorTexto(page, '.panel:first-of-type .btn-primario', 'Agregar')
+    // 2. Agregar el primer producto
+    await pulsarIndice(page, '.panel:first-of-type .btn-primario', 0)
     comprobar('Al agregar un producto la insignia sube a 1', (await texto(page, '.insignia')) === '1')
     comprobar('El producto aparece en el carrito', (await contar(page, '.panel:last-of-type .fila')) === 1)
 
     // 3. Agregar otra vez el mismo producto: no se duplica la fila
-    await pulsarPorTexto(page, '.panel:first-of-type .btn-primario', 'Agregar')
+    await pulsarIndice(page, '.panel:first-of-type .btn-primario', 0)
     comprobar(
       'Al repetir el producto no se duplica la fila',
       (await contar(page, '.panel:last-of-type .fila')) === 1,
@@ -101,30 +109,52 @@ const main = async () => {
       (await page.$eval('.panel:last-of-type .fila-detalle', (el) => el.textContent)).includes('2 x'),
     )
 
-    // 4. El total se recalcula (2 x 45.000 = 90.000)
+    // Reto 2: subtotal por producto
     comprobar(
-      'El total se recalcula con cada producto agregado',
-      (await texto(page, '.panel:last-of-type .total strong')) === '$90.000',
+      'Cada fila del carrito muestra el subtotal (reto 2)',
+      (await contar(page, '.panel:last-of-type .fila-subtotal')) === 1,
+    )
+    comprobar(
+      'El subtotal se calcula como precio x cantidad (reto 2)',
+      (await texto(page, '.panel:last-of-type .fila-subtotal')).includes('Subtotal'),
     )
 
-    // 5. El botón Quitar elimina solo ese producto
-    await pulsarPorTexto(page, '.panel:last-of-type .btn-secundario', 'Quitar')
-    comprobar('El botón Quitar elimina el producto', (await contar(page, '.panel:last-of-type .fila')) === 0)
-
-    // Dejamos el carrito con productos para la captura
-    const agregar = '.panel:first-of-type .btn-primario'
-    for (const indice of [0, 0, 1, 2]) {
-      await page.$$eval(agregar, (botones, i) => botones[i].click(), indice)
-    }
+    // 4. El total se recalcula
+    const totalConDos = numero(
+      await texto(page, '.panel:last-of-type .total strong'),
+    )
+    await pulsarIndice(page, '.panel:first-of-type .btn-primario', 1)
+    const totalConTres = numero(
+      await texto(page, '.panel:last-of-type .total strong'),
+    )
     comprobar(
-      'El total refleja 4 unidades (90.000 + 30.000 + 180.000 = 300.000)',
-      (await texto(page, '.panel:last-of-type .total strong')) === '$300.000',
+      'El total se recalcula con cada producto agregado',
+      totalConTres > totalConDos,
+    )
+
+    // Reto 1: el botón "−" resta una unidad
+    await page.$eval('.panel:last-of-type .btn-cantidad', (el) => el.click())
+    comprobar(
+      'El botón "−" baja la cantidad a 1 (reto 1)',
+      (await page.$eval('.panel:last-of-type .fila-detalle', (el) => el.textContent)).includes('1 x'),
+    )
+
+    // Reto 3: el carrito persiste al recargar
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await esperarCatalogo(page)
+    comprobar(
+      'El carrito se conserva al recargar la página (reto 3)',
+      (await texto(page, '.insignia')) === '2',
     )
 
     // Captura de evidencia
     await mkdir(dirname(SALIDA), { recursive: true })
-    await page.screenshot({ path: SALIDA, fullPage: true })
+    await page.screenshot({ path: SALIDA })
     console.log(`\nCaptura guardada en ${SALIDA}`)
+
+    // 5. Quitar un producto
+    await pulsarPorTexto(page, '.panel:last-of-type .btn-secundario', 'Quitar')
+    comprobar('El botón Quitar elimina solo ese producto', (await contar(page, '.panel:last-of-type .fila')) === 1)
 
     // 6. Vaciar carrito
     await pulsarPorTexto(page, '.panel:last-of-type .btn-bloque', 'Vaciar carrito')

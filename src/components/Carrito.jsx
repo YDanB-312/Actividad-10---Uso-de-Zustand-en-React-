@@ -3,8 +3,9 @@ import { useCarritoStore } from '../store/useCarritoStore'
 
 // Definimos el componente Carrito
 function Carrito() {
-  // Leemos el dato items y las dos acciones que vamos a usar
+  // Leemos el dato items y las acciones que vamos a usar
   const items = useCarritoStore((state) => state.items)
+  const disminuirCantidad = useCarritoStore((state) => state.disminuirCantidad)
   const eliminarProducto = useCarritoStore((state) => state.eliminarProducto)
   const vaciarCarrito = useCarritoStore((state) => state.vaciarCarrito)
 
@@ -34,19 +35,35 @@ function Carrito() {
         <div key={item.id} className="fila">
           <div>
             <p className="fila-nombre">{item.nombre}</p>
-            {/* Mostramos la cantidad y el subtotal de ese producto */}
+            {/* Mostramos la cantidad y el precio unitario */}
             <p className="fila-detalle">
               {item.cantidad} x ${item.precio.toLocaleString('es-CO')}
             </p>
+            {/* Reto 2: subtotal del producto (precio por cantidad) */}
+            <p className="fila-subtotal">
+              Subtotal: ${(item.precio * item.cantidad).toLocaleString('es-CO')}
+            </p>
           </div>
 
-          {/* Enviamos el id del item a la acción eliminarProducto */}
-          <button
-            className="btn btn-secundario"
-            onClick={() => eliminarProducto(item.id)}
-          >
-            Quitar
-          </button>
+          {/* Acciones de la fila */}
+          <div className="fila-acciones">
+            {/* Reto 1: resta una unidad; si llega a 0 el producto sale */}
+            <button
+              className="btn btn-cantidad"
+              onClick={() => disminuirCantidad(item.id)}
+              aria-label={`Quitar una unidad de ${item.nombre}`}
+            >
+              −
+            </button>
+
+            {/* Enviamos el id del item a la acción eliminarProducto */}
+            <button
+              className="btn btn-secundario"
+              onClick={() => eliminarProducto(item.id)}
+            >
+              Quitar
+            </button>
+          </div>
         </div>
       ))}
 

@@ -82,6 +82,7 @@ body {
   display: flex;                     /* Texto y botón en una fila */
   justify-content: space-between;    /* Texto a la izquierda, botón a la derecha */
   align-items: center;               /* Centra verticalmente */
+  gap: 1rem;                         /* Separación entre el texto y los botones */
   padding: 0.75rem 0;                /* Espacio arriba y abajo */
   border-bottom: 1px solid var(--borde); /* Línea separadora */
 }
@@ -153,4 +154,54 @@ body {
   color: var(--texto-suave); /* Texto gris */
   text-align: center;        /* Centrado */
   padding: 2rem 0;           /* Espacio arriba y abajo */
+}
+
+/* ===== ESTILOS AGREGADOS PARA LOS RETOS DE EXTENSIÓN ===== */
+
+/* Contenedor con la imagen y los datos del producto (reto 4) */
+.fila-info {
+  display: flex;             /* Imagen y texto en una fila */
+  align-items: center;       /* Centra verticalmente */
+  gap: 0.75rem;              /* Separación entre imagen y texto */
+  min-width: 0;              /* Permite que los textos largos se ajusten */
+}
+
+/* Miniatura del producto que viene de la API */
+.fila-imagen {
+  width: 40px;               /* Ancho fijo */
+  height: 40px;              /* Alto fijo */
+  object-fit: contain;       /* La imagen no se deforma */
+  background-color: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+/* Subtotal por producto (reto 2) */
+.fila-subtotal {
+  font-size: 0.875rem;       /* Texto pequeño */
+  font-weight: 500;          /* Resaltado */
+}
+
+/* Botón de cantidad "−" (reto 1) */
+.fila-acciones {
+  display: flex;             /* Botones en una fila */
+  align-items: center;       /* Centra verticalmente */
+  gap: 0.5rem;               /* Separación entre botones */
+}
+
+.btn-cantidad {
+  width: 2rem;               /* Botón cuadrado */
+  height: 2rem;              /* Botón cuadrado */
+  padding: 0;                /* Sin relleno extra */
+  display: inline-flex;      /* Centra el signo */
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--texto);
+  border: 1px solid var(--borde);
+}
+
+.btn-cantidad:hover {
+  border-color: var(--texto-suave);
 }

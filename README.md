@@ -3,9 +3,9 @@
 Práctica del programa **Análisis y Desarrollo de Software (SENA)**.
 Guía: _Carrito de compras con React y Zustand_ — Instructor Juan Pablo Chamizzo Vega.
 
-App de tienda con un carrito de compras cuyo estado se comparte entre
-componentes usando **Zustand**, sin pasar props ni usar Providers. El código
-sigue paso a paso la guía (pasos 1 a 10).
+Tienda en React con un carrito de compras cuyo estado se comparte entre
+componentes usando **Zustand**, sin pasar props ni usar Providers. Incluye los
+pasos 1 a 10 de la guía y los cuatro retos de extensión.
 
 ![Tienda funcionando con productos en el carrito](docs/captura-tienda.png)
 
@@ -18,6 +18,7 @@ separando datos, lógica y vista.
 
 - Node.js 18 o superior
 - npm
+- Conexión a internet (el catálogo se carga desde una API)
 - Conocer componentes, props, `useState` y el método `map` de los arreglos
 
 ## Cómo ejecutarlo
@@ -50,48 +51,68 @@ npm run captura   # Comprueba el checklist y regenera docs/captura-tienda.png
 
 ```
 src/
-├── data/
-│   └── productos.js          ← datos de la tienda
 ├── store/
 │   └── useCarritoStore.js    ← estado global (Zustand)
 ├── components/
 │   ├── Encabezado.jsx        ← título y contador
-│   ├── ListaProductos.jsx    ← catálogo
+│   ├── ListaProductos.jsx    ← catálogo (desde la API)
 │   └── Carrito.jsx           ← carrito y total
 ├── App.jsx                   ← une los componentes
 ├── index.css                 ← estilos de la app
 └── main.jsx                  ← punto de entrada
 ```
 
-Cada carpeta tiene una responsabilidad: `data` guarda la información,
-`store` la lógica del estado y `components` la parte visual.
+Cada carpeta tiene una responsabilidad: `store` la lógica del estado y
+`components` la parte visual. Los datos de la tienda ya no viven en un archivo
+local, sino que llegan desde la API (reto 4).
 
 ## Cómo funciona el store
 
 El store vive en `src/store/useCarritoStore.js` y se crea con
-`create((set) => ({ ... }))`. Contiene:
+`create(persist((set) => ({ ... })))`. Contiene:
 
 | Elemento | Tipo | Qué hace |
 | --- | --- | --- |
 | `items` | estado | Arreglo con los productos del carrito |
 | `agregarProducto` | acción | Agrega un producto o suma 1 a su cantidad |
+| `disminuirCantidad` | acción | Resta 1; si llega a 0, saca el producto del carrito |
 | `eliminarProducto` | acción | Quita un producto por su `id` |
 | `vaciarCarrito` | acción | Deja el carrito vacío |
 
 Ningún componente guarda su propia copia del carrito: todos leen el mismo
 store, por eso el `Encabezado` se actualiza aunque no reciba props.
 
+## Retos de extensión
+
+1. **Disminuir cantidad.** Acción `disminuirCantidad` en el store y botón `−` en
+   cada fila del carrito. Si la cantidad llega a 0, el producto sale del carrito.
+2. **Subtotal por producto.** Cada fila del carrito muestra
+   `precio x cantidad` en la línea `Subtotal`.
+3. **Carrito persistente.** El store usa el middleware `persist` de Zustand
+   (`import { persist } from 'zustand/middleware'`), de modo que el carrito se
+   guarda en `localStorage` (clave `carrito-zustand`) y no se pierde al recargar.
+4. **Productos desde una API.** `ListaProductos` hace `fetch` a
+   `https://fakestoreapi.com/products` y adapta las propiedades
+   (`title → nombre`, `price → precio`, `image → imagen`). Los precios llegan en
+   dólares y se convierten a pesos con una tasa aproximada. Si la petición falla
+   o tarda más de 8 segundos, se muestra un mensaje de error con botón
+   **Reintentar**.
+
 ## Checklist de comprobación (paso 10)
 
-Verificado automáticamente con `npm run captura` (13/13 correctas):
+Verificado automáticamente con `npm run captura` (16/16 correctas):
 
 - [x] Al cargar la página, el carrito dice "Tu carrito está vacío" y la insignia muestra 0.
-- [x] Al agregar una Camiseta, aparece en el carrito y la insignia sube a 1.
-- [x] Al agregar otra Camiseta, no se duplica la fila: la cantidad pasa a 2.
+- [x] Al agregar un producto, aparece en el carrito y la insignia sube a 1.
+- [x] Al agregar otra vez el mismo producto, no se duplica la fila: la cantidad pasa a 2.
 - [x] El total se recalcula con cada producto agregado.
 - [x] El botón Quitar elimina solo ese producto.
 - [x] El botón Vaciar carrito deja la insignia en 0 y muestra el mensaje de vacío.
 - [x] En una pantalla angosta, los dos paneles se ubican uno debajo del otro.
+- [x] Cada fila muestra su subtotal (reto 2).
+- [x] El botón `−` reduce la cantidad y elimina al llegar a 0 (reto 1).
+- [x] El carrito se conserva al recargar la página (reto 3).
+- [x] El catálogo se carga desde la API (reto 4).
 
 ## Preguntas de reflexión
 
@@ -149,25 +170,12 @@ React para resolver un problema concreto: Zustand es un ejemplo (estado global),
 como también lo son React Router, Redux o React Query. React funciona sin ellas;
 solo agregan capacidades.
 
-## Retos de extensión (opcionales)
-
-La guía propone cuatro retos adicionales. En la rama **`retos`** está una
-versión del proyecto con los cuatro implementados:
-
-1. **Disminuir cantidad** (`disminuirCantidad`): botón `−` que resta 1 y saca el
-   producto del carrito cuando llega a 0.
-2. **Subtotal por producto:** cada fila del carrito muestra `precio x cantidad`.
-3. **Carrito persistente:** middleware `persist` de Zustand (`localStorage`).
-4. **Productos desde una API:** `fetch` a `https://fakestoreapi.com/products`,
-   adaptando los nombres de las propiedades.
-
-Para verla: `git switch retos`.
-
 ## Entregable
 
 - [x] Proyecto React + Vite con Zustand
 - [x] README con la captura de la tienda funcionando
 - [x] Respuestas a las preguntas de reflexión
+- [x] Los cuatro retos de extensión
 - [ ] Subir el proyecto a un repositorio de GitHub
 
 > Para publicarlo: crea un repositorio vacío en GitHub y luego ejecuta
